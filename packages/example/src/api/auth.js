@@ -1,8 +1,11 @@
-export function login(username, password) {
+export async function login({ username, password }) {
   if (username === "super") {
     if (password === "pass") {
       return {
-        userId: 1
+        status: 200,
+        data: {
+          userId: 1
+        }
       };
     }
   }
@@ -10,8 +13,15 @@ export function login(username, password) {
   if (username === "super2") {
     if (password === "pass") {
       return {
-        userId: 2
+        status: 200,
+        data: {
+          userId: 1
+        }
       };
     }
   }
+
+  return {
+    status: 400
+  };
 }

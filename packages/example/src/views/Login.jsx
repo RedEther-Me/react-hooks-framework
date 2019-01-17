@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import * as Yup from "yup";
 
 import { Form, Field } from "libraries/form-management";
 // import { Form, Field } from "@framework/library";
+import { StateContext } from "libraries/state-management";
 
 import InputField from "components/InputField";
+
+import { loginSubmitted } from "actions/auth";
 
 const initialState = {
   username: "",
@@ -16,11 +19,13 @@ const validations = Yup.object().shape({
   password: Yup.string().required()
 });
 
-const handleSubmit = values => {
-  console.log("submit --- ", values);
+const handleSubmit = dispatch => values => {
+  dispatch(loginSubmitted(values));
 };
 
 const Login = () => {
+  const { dispatch } = useContext(StateContext);
+
   return (
     <div className="login">
       <div className="columns is-mobile">
@@ -31,7 +36,7 @@ const Login = () => {
             <Form
               initialState={initialState}
               validations={validations}
-              handleSubmit={handleSubmit}
+              handleSubmit={handleSubmit(dispatch)}
             >
               <Field
                 name="username"

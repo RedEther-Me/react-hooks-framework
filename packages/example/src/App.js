@@ -6,9 +6,9 @@ import {
   Switch
 } from "react-router-dom";
 
-import { StateContext } from "libraries/state-management";
+import { StateProvider } from "libraries/state-management";
 
-import { reducer } from "./state";
+import { reducer, middleware } from "./state";
 
 import Navbar from "views/Navbar";
 
@@ -19,7 +19,7 @@ class App extends Component {
   render() {
     return (
       <Fragment>
-        <StateContext.Provider value={reducer}>
+        <StateProvider reducer={reducer} middleware={middleware}>
           <header>
             <Navbar />
           </header>
@@ -32,7 +32,7 @@ class App extends Component {
               </Switch>
             </div>
           </Router>
-        </StateContext.Provider>
+        </StateProvider>
       </Fragment>
     );
   }
