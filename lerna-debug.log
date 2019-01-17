@@ -1,0 +1,10 @@
+0 silly argv { _: [ 'create' ],
+0 silly argv   lernaVersion: '3.10.5',
+0 silly argv   '$0':
+0 silly argv    '..\\..\\..\\AppData\\Roaming\\npm\\node_modules\\lerna\\cli.js',
+0 silly argv   name: 'example\\' }
+1 notice cli v3.10.5
+2 verbose rootPath C:\Users\Ajohnson\git\framework
+3 error TypeError: Cannot read property 'trim' of undefined
+3 error     at module.exports (C:\Users\Ajohnson\AppData\Roaming\npm\node_modules\lerna\node_modules\camelcase\index.js:39:13)
+3 error     at CreateCommand.initialize (C:\Users\Ajohnson\AppData\Roaming\npm\node_modules\lerna\node_modules\@lerna\create\index.js:63:22)
