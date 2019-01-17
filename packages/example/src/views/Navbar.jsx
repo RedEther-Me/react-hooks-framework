@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
+
+import { StateContext } from "libraries/state-management";
+
+const mapStateToProps = ({ state: { auth } }) => ({
+  userId: auth.user && auth.user.id
+});
 
 const Navbar = () => {
+  const { userId } = mapStateToProps(useContext(StateContext));
+
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
@@ -16,6 +24,9 @@ const Navbar = () => {
           <span aria-hidden="true" />
           <span aria-hidden="true" />
         </a>
+      </div>
+      <div className="navbar-end">
+        <div className="navbar-item">{userId}</div>
       </div>
     </nav>
   );

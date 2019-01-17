@@ -80,8 +80,6 @@ const Form = ({
       // submit
       handleSubmit(values);
     } catch (err) {
-      console.log(err);
-
       if (err.name === "ValidationError") {
         err.inner.forEach(({ path, errors }) => {
           context.errors[path].setErrors(errors);

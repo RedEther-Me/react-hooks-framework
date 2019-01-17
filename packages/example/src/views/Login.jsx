@@ -7,7 +7,11 @@ import { StateContext } from "libraries/state-management";
 
 import InputField from "components/InputField";
 
-import { loginSubmitted } from "actions/auth";
+import { loginSubmitted, loginError } from "actions/auth";
+
+const mapStateToProps = ({ state: { auth } }) => ({
+  error: auth.error
+});
 
 const initialState = {
   username: "",
@@ -24,7 +28,8 @@ const handleSubmit = dispatch => values => {
 };
 
 const Login = () => {
-  const { dispatch } = useContext(StateContext);
+  const { dispatch, state } = useContext(StateContext);
+  const { error } = mapStateToProps({ state });
 
   return (
     <div className="login">
@@ -38,9 +43,19 @@ const Login = () => {
               validations={validations}
               handleSubmit={handleSubmit(dispatch)}
             >
+              {error && (
+                <div className="notification is-danger">
+                  <button
+                    className="delete"
+                    onClick={() => dispatch(loginError({}))}
+                  />
+                  {error}
+                </div>
+              )}
+
               <Field
                 name="username"
-                label="User Name"
+                label="Username"
                 requiredLabel
                 component={InputField}
               />

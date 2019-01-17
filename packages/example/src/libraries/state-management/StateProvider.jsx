@@ -35,7 +35,10 @@ async function invokeHandlers(dispatch, handler, action) {
 const StateProvider = ({ reducer, middleware, children }) => {
   const middlewareHandler = middleware();
 
-  const [state, dispatch] = useReducer(reducer, {});
+  const [state, dispatch] = useReducer(
+    reducer,
+    reducer(undefined, { type: "@@INITIAL" })
+  );
 
   const context = {
     state,

@@ -10,7 +10,11 @@ import { loginSuccessful, loginError } from "actions/auth";
 
 import api from "api";
 
-export function reducer(state, action) {
+const initialState = {
+  auth: {}
+};
+
+export function reducer(state = initialState, action) {
   console.log(action);
   switch (action.type) {
     case LOGIN_SUCCESSFUL: {
