@@ -1,0 +1,24 @@
+@import "bulma";
+
+$login-form-height: 300px;
+
+.navbar {
+  background: $grey-light;
+}
+
+.login {
+  .login-vertical-column {
+    background: $light;
+    height: calc(100vh - 3.5rem);
+  }
+
+  .login-vertical-spacer {
+    height: calc((100vh - 300px) / 2);
+  }
+
+  .login-form {
+    height: $login-form-height;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+}
