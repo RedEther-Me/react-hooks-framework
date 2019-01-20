@@ -7,6 +7,7 @@ import { StateProvider } from "libraries/state-management";
 import { reducer, middleware } from "./state";
 
 import AuthRoute from "components/AuthRoute";
+import AuthContainer from "components/AuthContainer";
 
 import Navbar from "views/Navbar";
 
@@ -19,7 +20,7 @@ class App extends Component {
       <Fragment>
         <StateProvider reducer={reducer} middleware={middleware}>
           <Router history={createHistory()}>
-            <Fragment>
+            <AuthContainer>
               <header>
                 <Navbar />
               </header>
@@ -30,7 +31,7 @@ class App extends Component {
                   <Redirect to="/login" />
                 </Switch>
               </div>
-            </Fragment>
+            </AuthContainer>
           </Router>
         </StateProvider>
       </Fragment>

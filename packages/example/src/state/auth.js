@@ -5,12 +5,14 @@ import {
   LOGOUT,
   LOGIN_SUBMITTED,
   LOGIN_SUCCESSFUL,
-  LOGIN_ERROR
+  LOGIN_ERROR,
+  TOKEN_LOADED
 } from "actions/action-types";
 
 import { loginSuccessful, loginError } from "actions/auth";
 
 import api from "api";
+import { setAuthToken, clearAuthToken } from "utils";
 
 const initialState = {
   authenticated: false,
@@ -20,19 +22,19 @@ const initialState = {
 };
 
 export function reducer(state = initialState, action) {
-  console.log(action);
   switch (action.type) {
     case LOGIN_SUCCESSFUL: {
+      setAuthToken(action.user.token);
       return {
         ...state,
         authenticated: true,
         user: {
-          id: action.userId,
-          privs: action.privs
+          ...action.user
         }
       };
     }
     case LOGIN_ERROR: {
+      clearAuthToken();
       return {
         ...state,
         authenticated: false,
@@ -43,6 +45,7 @@ export function reducer(state = initialState, action) {
       };
     }
     case LOGOUT: {
+      clearAuthToken();
       return {
         ...state,
         authenticated: false,
@@ -67,7 +70,6 @@ function* login({ username, password }) {
         ...data
       })
     );
-
     pushState("/home");
   } else {
     yield put(
@@ -78,6 +80,27 @@ function* login({ username, password }) {
   }
 }
 
+function* tokenLogin({ token }) {
+  const { status, data } = yield api.auth.tokenLogin({ token });
+
+  if (status === 200) {
+    yield put(
+      loginSuccessful({
+        ...data
+      })
+    );
+  } else {
+    yield put(
+      loginError({
+        message: "Auth-Token incorrect"
+      })
+    );
+  }
+}
+
 export function middleware() {
-  return all([takeEvery(LOGIN_SUBMITTED, login)]);
+  return all([
+    takeEvery(LOGIN_SUBMITTED, login),
+    takeEvery(TOKEN_LOADED, tokenLogin)
+  ]);
 }

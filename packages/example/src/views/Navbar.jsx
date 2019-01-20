@@ -2,12 +2,28 @@ import React, { useContext } from "react";
 
 import { StateContext } from "libraries/state-management";
 
-const mapStateToProps = ({ state: { auth } }) => ({
-  userId: auth.user && auth.user.id
-});
+import NavbarDropdown from "components/bulma/NavbarDropdown";
+
+import { logout } from "actions/auth";
+
+const mapStateToProps = ({ auth }) => {
+  if (auth.user) {
+    const { name } = auth.user;
+
+    return {
+      authenticated: auth.authenticated,
+      name
+    };
+  }
+
+  return {
+    authenticated: auth.authenticated
+  };
+};
 
 const Navbar = () => {
-  const { userId } = mapStateToProps(useContext(StateContext));
+  const { state, dispatch } = useContext(StateContext);
+  const { authenticated, name } = mapStateToProps(state);
 
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
@@ -18,16 +34,22 @@ const Navbar = () => {
           className="navbar-burger burger"
           aria-label="menu"
           aria-expanded="false"
-          data-target="navbarBasicExample"
         >
           <span aria-hidden="true" />
           <span aria-hidden="true" />
           <span aria-hidden="true" />
         </a>
       </div>
-      <div className="navbar-end">
-        <div className="navbar-item">{userId}</div>
-      </div>
+      {authenticated && (
+        <div className="navbar-end">
+          <NavbarDropdown isRight name={name}>
+            <a className="navbar-item">My Profile</a>
+            <a className="navbar-item" onClick={() => dispatch(logout())}>
+              Log out
+            </a>
+          </NavbarDropdown>
+        </div>
+      )}
     </nav>
   );
 };
