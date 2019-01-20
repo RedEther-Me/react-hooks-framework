@@ -4,7 +4,7 @@ import { SIDE_EFFECT_PUT } from "./side-effect-types";
 
 import StateContext from "./StateContext";
 
-async function invokeHandlers(dispatch, handler, action) {
+async function invokeHandlers(libHandlers, handler, action) {
   const sequence = handler(action);
 
   let done = false;
@@ -19,7 +19,7 @@ async function invokeHandlers(dispatch, handler, action) {
 
       switch (input.type) {
         case SIDE_EFFECT_PUT: {
-          dispatch(input.action);
+          libHandlers.dispatch(input.action);
 
           input = undefined;
           break;
@@ -35,17 +35,21 @@ async function invokeHandlers(dispatch, handler, action) {
 const StateProvider = ({ reducer, middleware, children }) => {
   const middlewareHandler = middleware();
 
-  const [state, dispatch] = useReducer(
-    reducer,
-    reducer(undefined, { type: "@@INITIAL" })
-  );
+  const [state, dispatch] = useReducer(reducer, undefined, {
+    type: "@@INITIAL"
+  });
+
+  const libHandlers = {
+    dispatch,
+    history: {}
+  };
 
   const context = {
     state,
     dispatch: action => {
       if (middlewareHandler[action.type]) {
         middlewareHandler[action.type].forEach(handler =>
-          invokeHandlers(dispatch, handler, action)
+          invokeHandlers(libHandlers, handler, action)
         );
       }
 
@@ -58,4 +62,4 @@ const StateProvider = ({ reducer, middleware, children }) => {
   );
 };
 
-export default StateProvider;
+export default React.memo(StateProvider);

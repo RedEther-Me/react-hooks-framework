@@ -4,9 +4,8 @@ import { StateContext } from "libraries/state-management";
 
 const Home = () => {
   const { state } = useContext(StateContext);
-  console.log("state --- ", state);
 
-  return <div className="home" />;
+  return <div className="home">{JSON.stringify(state)}</div>;
 };
 
 export default Home;

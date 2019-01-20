@@ -4,18 +4,20 @@ export async function login({ username, password }) {
       return {
         status: 200,
         data: {
-          userId: 1
+          userId: 1,
+          privs: ["user", "super"]
         }
       };
     }
   }
 
-  if (username === "super2") {
+  if (username === "user") {
     if (password === "pass") {
       return {
         status: 200,
         data: {
-          userId: 2
+          userId: 2,
+          privs: ["user"]
         }
       };
     }

@@ -8,10 +8,11 @@ export function loginSubmitted({ username, password }) {
   };
 }
 
-export function loginSuccessful({ userId }) {
+export function loginSuccessful({ userId, privs }) {
   return {
     type: LOGIN_SUCCESSFUL,
-    userId
+    userId,
+    privs
   };
 }
 
